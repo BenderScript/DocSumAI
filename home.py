@@ -42,15 +42,15 @@ def submit_message(client, assistant_id, thread, user_message):
 
 # Pretty printing helper
 def pretty_print(messages):
-    print("# Messages")
+    # print("# Messages")
     for m in messages:
         print(f"{m.role}: {m.content[0].text.value}")
     print()
 
 
 def get_response(client, thread):
-    messages = client.beta.threads.messages.list(thread_id=thread.id)
-    show_json(messages)
+    messages = client.beta.threads.messages.list(thread_id=thread.id, order="asc")
+    # show_json(messages)
     return messages
 
 
