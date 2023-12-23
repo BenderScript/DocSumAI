@@ -69,8 +69,7 @@ def main():
     client = openai.Client()
 
     print(f"{Fore.MAGENTA} Welcome to Large Document Summarization Assistant. I am here to help you summarize very "
-          f"large files...{Style.RESET_ALL}\n")
-    print(f"{Fore.MAGENTA} You can type `quit` to exit ...{Style.RESET_ALL}\n")
+          f"large documents...{Style.RESET_ALL}\n")
 
     assistant = client.beta.assistants.create(
         name="Document Summarization Assistant",
@@ -97,9 +96,13 @@ def main():
     print(f"{Fore.MAGENTA} Assistant Info: {assistant.id} {Style.RESET_ALL}")
     show_json(assistant)
 
+    # Create a thread and run
+    # Start time
+    start_time = time.time()
     thread, run = create_thread_and_run(client,
-                                        "Summarize the document A Survey of Large Language Models. It is a large "
-                                        "document so make sure the summary captures the important points",
+                                        "Summarize the document A Survey of Large Language Models. Priority is to "
+                                        "capture all important points in the document, do not be concerted about "
+                                        "summary size",
                                         doc_sum_id
                                         )
 
@@ -107,6 +110,12 @@ def main():
     show_json(run)
 
     check_run(client, thread.id, run.id)
+    # End time
+    end_time = time.time()
+    # Calculate elapsed time in seconds
+    elapsed_time = end_time - start_time
+    print(f"{Fore.BLUE}Elapsed time: {elapsed_time}, seconds{Style.RESET_ALL}\n")
+    print(f"{Fore.MAGENTA} Document Summary: {Style.RESET_ALL}\n")
     pretty_print(get_response(client, thread))
 
 
